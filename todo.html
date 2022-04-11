@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ToDo</title>
+
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        body {
+            color: #dddddd;
+            background-color: #222222;
+        }
+
+        #app {
+            height: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        ol {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.3rem 2rem;
+            border-radius: 12px;
+        }
+
+        li > p {
+            font-size: 1.2rem;
+        }
+
+        li .buttons {
+            margin-left: 7rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        li .buttons button {
+            padding: 0;
+            background-color: inherit;
+            color: inherit;
+            border: none;
+        }
+
+        .move-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px
+        }
+
+        .move-buttons>button>div {
+            width: 0;
+            height: 0;
+        }
+
+        .move-buttons>button:first-of-type>div {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 7px solid #dddddd;
+        }
+
+        .move-buttons>button:last-of-type>div {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>ToDo App</h1>
+        <div>
+            <input type="text" placeholder="New todo" v-model.trim="newTodo" />
+            <button @click="saveNewTodo()">Save</button>
+        </div>
+        <ol>
+            <li v-for="(todo, idx) in todos">
+                <p>{{ idx + 1 }}.&ensp;{{ todo }}</p>
+                <div class="buttons">
+                    <button @click="deleteTodo(idx)">🗙</button>
+                    <div class="move-buttons">
+                        <button @click="moveTodoUp(idx)">
+                            <div></div>
+                        </button>
+                        <button @click="moveTodoDown(idx)">
+                            <div></div>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </div>
+
+    <script>
+        const { computed, createApp, reactive, ref, toRaw, watch } = Vue;
+
+        createApp({
+            setup() {
+                const todos = reactive([
+                    "Buy tickets",
+                    "Watch movie",
+                    "Go home"
+                ]);
+
+                function deleteTodo(index) {
+                    todos.splice(index, 1);
+                }
+
+                function moveTodoUp(index) {
+                    if (index === 0) return;
+                    const todo = todos.splice(index, 1)[0];
+                    todos.splice(index - 1, 0, todo);
+                }
+
+                function moveTodoDown(index) {
+                    if (index === todos.length) return;
+                    const todo = todos.splice(index, 1)[0];
+                    todos.splice(index + 1, 0, todo);
+                }
+
+                const newTodo = ref("");
+
+                function saveNewTodo() {
+                    if (newTodo.value === "") return;
+                    todos.push(newTodo.value);
+                    newTodo.value = "";
+                }
+
+                return {
+                    todos,
+                    deleteTodo,
+                    moveTodoUp,
+                    moveTodoDown,
+                    newTodo,
+                    saveNewTodo
+                };
+            },
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

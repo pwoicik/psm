@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Book</title>
+
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        body {
+            color: #dddddd;
+            background-color: #222222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #app {
+            width: fit-content;
+        }
+
+        #form {
+            width: max-content;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            width: 100%;
+            font-size: 1.5rem;
+        }
+
+        input {
+            padding: 0.4rem 1rem;
+            width: 100%;
+            background-color: black;
+            color: #cccccc;
+            border: none;
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            margin-top: 0.3rem;
+        }
+
+        button {
+            font-size: 1.3rem;
+            padding: 0.4rem 1rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="form">
+            <label>
+                Book's title:
+                <input v-model="book.title" />
+            </label>
+            <label>
+                Author's name:
+                <input v-model="book.author.name" />
+            </label>
+            <label>
+                Author's surname:
+                <input v-model="book.author.surname" />
+            </label>
+            <button @click="saveBook()">Save</button>
+        </div>
+    </div>
+
+    <script>
+        const { computed, createApp, reactive, ref, toRaw, watch } = Vue;
+
+        createApp({
+            setup() {
+                const book = reactive({
+                    title: "",
+                    author: {
+                        name: "",
+                        surname: ""
+                    }
+                });
+
+                function saveBook() {
+                    console.log(toRaw(book));
+                }
+
+                return {
+                    book,
+                    saveBook
+                };
+            },
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
