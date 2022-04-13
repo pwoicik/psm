@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Company</title>
+
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        body {
+            color: #dddddd;
+            background-color: #222222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: #dddddd 1px solid;
+            padding: 2rem 7rem;
+            line-height: 2;
+            letter-spacing: 0.05rem;
+        }
+
+        h1 {
+            font-size: 1.15rem;
+            color: #f0f0f0
+        }
+
+        a:link {
+            color: #66b3d1
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <main>
+            <h1>{{ company.name }}</h1>
+            <p>{{ company.street }} {{ company.buildingNumber }}</p>
+            <p>{{ company.zip }} {{ company.city }}</p>
+            <p>tel. {{ company.phoneNumbers.join(", ") }}</p>
+            <a :href="company.website">{{ company.website }}</a>
+        </main>
+    </div>
+
+    <script>
+        const { computed, createApp, reactive, ref, toRaw, watch } = Vue;
+        
+        createApp({
+            setup() {
+                const company = reactive({
+                    name: "UNIKPOL S.A.",
+                    city: "Rawa Mazowiecka",
+                    zip: "02-114",
+                    street: "ul. Ukryta",
+                    buildingNumber: "5",
+                    phoneNumbers: ["22 345 90 21", "888 213 992"],
+                    website: "http://www.unikpol.pl"
+                });
+
+                return {
+                    company
+                };
+            },
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
